@@ -1,27 +1,10 @@
 # NetBridge — C++17 port of the Fishnet Java network stack
 
-NetBridge is a direct C++17 port of the `fishnetJava-1.8-link` teaching
-network stack (see `../tcp/fishnetJava-1.8-link`). The on-wire byte layouts,
-command file syntax, and simulator/emulator/trawler semantics are preserved
-so a Java node can interoperate with a C++ node through the same Trawler.
+NetBridge is a direct C++17 port of the same Java TCP implementation done in class. It utilizes a TCP Reno like AIMD for congestion control, and Go-Back-N loss prevention strategies.
 
 The codebase is organized under the `nb::` namespace with include paths
 prefixed `nb/`. No Fish-themed identifiers remain in the public API; the
 renaming is consistent throughout:
-
-| Java concept         | C++ equivalent (`nb::`)        |
-|----------------------|--------------------------------|
-| `Manager`            | `RuntimeManager`               |
-| `Simulator`          | `Simulator`                    |
-| `Emulator`           | `Emulator`                     |
-| `Trawler`            | `TrawlerService`               |
-| `Node`               | `StackNode`                    |
-| `TCPManager`         | `TcpManager`                   |
-| `TCPSock`            | `TcpSocket`                    |
-| `FishThread`         | `TimerTask`                    |
-| `IOThread`           | `ConsoleIoThread`              |
-| `SortedEventQueue`   | `OrderedEventQueue`            |
-| `Utility.fishTime()` | `nb::clockMicros()`            |
 
 ## Building
 
@@ -35,7 +18,7 @@ Outputs:
 - `build/netstack` — simulator/emulator entry point.
 - `build/trawler`  — coordinator server.
 - `build/nb_tests` — GoogleTest unit tests for wire-format parity and
-  parsing.
+parsing.
 
 Run the tests with:
 
@@ -110,30 +93,31 @@ Identical to Java's:
 - `echo ...` — print the remainder of the line.
 - `exit` — stop the simulator/emulator.
 - Any other line `A B …` — for the simulator, deliver the remaining tokens
-  as a command to node A; for the emulator, deliver the whole line to the
-  local node.
+as a command to node A; for the emulator, deliver the whole line to the
+local node.
 
 Example node command: `1 hello` (ping node 1 with payload `hello`).
 TCP-layer commands:
 
 - `transfer <dest> <destPort> <localPort> <amount> [interval] [sz]` —
-  open a TCP connection from the local node to `dest:destPort`, bound to
-  `localPort`, and send `amount` bytes.
+open a TCP connection from the local node to `dest:destPort`, bound to
+`localPort`, and send `amount` bytes.
 - `server <localPort> [backlog]` — accept TCP connections on `localPort`
-  and verify the data they send.
+and verify the data they send.
 
 ## Notes on fidelity
 
 - `Packet`, `Transport`, and `EmulatorPacket` use the exact big-endian byte
-  layouts produced by `java.math.BigInteger.toByteArray()` in the Java
-  implementation, so a C++ emulator interoperates with a Java emulator.
+layouts produced by `java.math.BigInteger.toByteArray()` in the Java
+implementation, so a C++ emulator interoperates with a Java emulator.
 - ARP / neighbor commands (`addNeighbor`, `addNeighborOptions`,
-  `removeNeighbor`, `reset`) are text commands byte-compatible with Java's
-  `TrawlerNodeARPCommands`. Floating-point edge-option values are
-  serialized using Java's shortest-round-trip double-to-string format.
+`removeNeighbor`, `reset`) are text commands byte-compatible with Java's
+`TrawlerNodeARPCommands`. Floating-point edge-option values are
+serialized using Java's shortest-round-trip double-to-string format.
 - Timer callbacks use `std::function<void()>` in place of Java's reflection
-  (`Callback.java` / `Method.invoke`). Semantics are identical: events are
-  popped in chronological order and fired synchronously.
+(`Callback.java` / `Method.invoke`). Semantics are identical: events are
+popped in chronological order and fired synchronously.
 - The Simulator advances simulated time; the Emulator is driven by wall
-  clock (`clockMicros()`), with `poll()` used for UDP, trawler TCP, and
-  stdin multiplexing in a single loop, matching Java's `MultiplexIO`.
+clock (`clockMicros()`), with `poll()` used for UDP, trawler TCP, and
+stdin multiplexing in a single loop, matching Java's `MultiplexIO`.
+
