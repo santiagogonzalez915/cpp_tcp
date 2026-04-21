@@ -1,0 +1,94 @@
+# Build directories
+build/
+build-*/
+cmake-build-*/
+out/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+Makefile
+CTestTestfile.cmake
+_deps/
+compile_commands.json
+
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.slo
+*.ko
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.la
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Fortran / linker output
+*.mod
+*.smod
+
+# Dependency files
+*.d
+
+# Test & coverage
+*.gcno
+*.gcda
+*.gcov
+coverage/
+*.profraw
+*.profdata
+Testing/
+
+# IDE / editor
+.vscode/
+.vs/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# clangd / ccls
+.cache/
+.ccls-cache/
+.clangd/
+
+# Python (scripts)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
