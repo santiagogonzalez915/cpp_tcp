@@ -1,4 +1,4 @@
-# NetBridge — C++17 port of the Fishnet Java network stack
+# NetBridge — C++17 TCP Implementation
 
 NetBridge is a direct C++17 port of the same Java TCP implementation done in class. It utilizes a TCP Reno like AIMD for congestion control, and Go-Back-N loss prevention strategies.
 
